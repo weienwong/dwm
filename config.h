@@ -1,3 +1,5 @@
+#include <X11/XF86keysym.h>
+
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
@@ -10,8 +12,8 @@ static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display 
 static const int showsystray        = 1;     /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:size=10" };
-static const char dmenufont[]       = "monospace:size=10";
+static const char *fonts[]          = { "Droid Sans Mono-9" };
+static const char dmenufont[]       = "Droid Sans Mono-9";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -63,6 +65,13 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char *slockcmd[] = {"slock", NULL};
+
+static const char *inc_vol[] = {"amixer", "-D", "pulse", "sset", "Master", "5%+", NULL};
+static const char *dec_vol[] = {"amixer", "-D", "pulse", "sset", "Master", "5%-", NULL};
+static const char *mute_vol[] = {"amixer", "-D", "pulse", "sset", "Master", "1+", "toggle", NULL};
+
+static const char *scrot[] = {"scrot", NULL};
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -89,6 +98,11 @@ static Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_l,      spawn,          {.v = slockcmd } },
+    { 0,                            XF86XK_AudioRaiseVolume, spawn, {.v = inc_vol} },
+    { 0,                            XF86XK_AudioLowerVolume, spawn, {.v = dec_vol} },
+    { 0,                            XF86XK_AudioMute, spawn, {.v = mute_vol} },
+    { 0,                            XK_Print, spawn, {.v = scrot} },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -116,4 +130,10 @@ static Button buttons[] = {
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+};
+
+
+
+static const char *const autostart[] = {
+    "dwmstatus &",  NULL
 };
