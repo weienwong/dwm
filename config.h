@@ -70,6 +70,7 @@ static const char *slockcmd[] = {"slock", NULL};
 static const char *inc_vol[] = {"amixer", "-D", "pulse", "sset", "Master", "5%+", NULL};
 static const char *dec_vol[] = {"amixer", "-D", "pulse", "sset", "Master", "5%-", NULL};
 static const char *mute_vol[] = {"amixer", "-D", "pulse", "sset", "Master", "1+", "toggle", NULL};
+static const char *mute_mic[] = {"amixer", "set", "Capture", "toggle", NULL};
 
 static const char *scrot[] = {"scrot", NULL};
 
@@ -102,6 +103,7 @@ static Key keys[] = {
     { 0,                            XF86XK_AudioRaiseVolume, spawn, {.v = inc_vol} },
     { 0,                            XF86XK_AudioLowerVolume, spawn, {.v = dec_vol} },
     { 0,                            XF86XK_AudioMute, spawn, {.v = mute_vol} },
+    { 0,                            XF86XK_AudioMicMute, spawn, {.v = mute_mic} },
     { 0,                            XK_Print, spawn, {.v = scrot} },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
